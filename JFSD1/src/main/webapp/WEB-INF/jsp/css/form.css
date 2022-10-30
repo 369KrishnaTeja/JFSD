@@ -1,0 +1,27 @@
+@charset "ISO-8859-1";
+
+#grad1
+{	
+	height: 55px;
+   background-color: red; /* For browsers that do not support gradients */
+   background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+	color : #000080;
+}
+.formBlock
+{	align-items:flex-start;
+	justify-content: space-around;
+	box-sizing: content-box;
+	padding: 30 5% 20%;
+}
+
+
+.bg-purple {
+    color: #fff;
+    background: -webkit-linear-gradient(110deg, #a60af3 40%, rgba(0, 0, 0, 0) 30%), -webkit-radial-gradient(farthest-corner at 0% 0%, #7a00cc 70%, #c03fff 70%);
+    background: -o-linear-gradient(110deg, #a60af3 40%, rgba(0, 0, 0, 0) 30%), -o-radial-gradient(farthest-corner at 0% 0%, #7a00cc 70%, #c03fff 70%);
+    background: -moz-linear-gradient(110deg, #a60af3 40%, rgba(0, 0, 0, 0) 30%), -moz-radial-gradient(farthest-corner at 0% 0%, #7a00cc 70%, #c03fff 70%);
+    background: linear-gradient(110deg, #a60af3 40%, rgba(0, 0, 0, 0) 30%), radial-gradient(farthest-corner at 0% 0%, #7a00cc 70%, #c03fff 70%);
+	box-sizing: content-box;
+	border-radius: 2%;
+	padding: 30 2% 27%;
+}

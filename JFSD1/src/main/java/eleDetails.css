@@ -1,33 +1,4 @@
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
-<head><ul>
-  <li><a href="formd" href="#home">BillC</a></li>
-  <li><a href="form">Register</a></li>
-  <li><a href="about">Contact</a></li>
-  <li><a href="home">Home</a></li>
-</ul></head>
-<centre><h2>Enter Details To calculate Electricity</h2></centre>
-<body >
-<div class="bg-img">
-<form:form method="post" action="details">
-<table>
-    <tr>
-        <td>Total Power:</td>
-        <td><form:input path="TotalPower"   class="pit" ></form:input></td>
-    </tr>
-    <tr>
-        <td>Total Hours:</td>
-        <td><form:input path="hour"   class="pit" ></form:input></td>
-    </tr>
-    <tr>
-        <td><input type="submit" value="Enter"/></td>
-    </tr>
-</table>
-</form:form>
-</body>
-
-  </div>
-<style>
+@charset "ISO-8859-1";
 body{
 
   background-image: url("../../images/1323434.jpg");
@@ -145,4 +116,3 @@ li a:hover {
   width: auto;
   padding: 2px 3px 2px 3px;
 }
-</style>

@@ -10,6 +10,8 @@ public class JfsdApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JfsdApplication.class, args);
+		System.out.println("JFSD Server running on port :8080");
+
 	}
 
 }
