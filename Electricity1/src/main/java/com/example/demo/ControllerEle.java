@@ -18,16 +18,12 @@ import org.springframework.http.ResponseEntity;
 public class ControllerEle
 {
 	@GetMapping("/ele")
-	public String calculate(Model m)
+	public String calculate()
 	{
 		ResponseEntity<Electricity> response=new RestTemplate().getForEntity("http://localhost:8080/details1/", Electricity.class);
 		ResponseEntity<User> response1=new RestTemplate().getForEntity("http://localhost:8080/details2/", User.class);
 		Electricity c1=response.getBody();
 		User c2=response1.getBody();
-		m.addAttribute("us",c2.getUsername());
-		m.addAttribute("em",c2.getEmail());
-		m.addAttribute("ph",c2.getPhoneno());
-		m.addAttribute("cost",(c1.getHour()*c1.getTotalPower()*6.15)/1000);
 		return "<!DOCTYPE html>\n"
 				+ "<html lang=en>\n"
 				+ "<head>\n"

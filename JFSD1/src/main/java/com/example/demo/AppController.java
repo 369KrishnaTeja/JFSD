@@ -18,7 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -82,14 +85,14 @@ public class AppController {
 		m.addAttribute("cost",(c1.getHour()*c1.getTotalPower()*6.15)/1000);
 		return "bill";
 	}
+	
 	@PostMapping("/details")
-	@ResponseBody
-	public Electricity details(@ModelAttribute("k") Electricity k,Model m)
+	public String details(@ModelAttribute("k") Electricity k,Model m)
 	{
 		m.addAttribute("command",new Electricity());
 		t=k;
 		r1.save(k);
-		return k;
+		return "redirect:/ele";
 	}
 	
 	@GetMapping("/details1")
@@ -130,7 +133,7 @@ public class AppController {
 	@GetMapping("/home")
 	public String home(Model m)
 	{
-		m.addAttribute("us",e.getUsername());
+		m.addAttribute("un",e.getUsername());
 		return "home";
 	}
 	
@@ -152,6 +155,30 @@ public class AppController {
 		  te = g.getEmail();
 		  num = g.getPhoneno();
 		  return "redirect:/send_text_email";
+	  }
+	  
+	  @GetMapping("/delete111/{id}")
+	  @ResponseBody
+	  public String delete111(@PathVariable int id)
+	  {
+		  @SuppressWarnings("deprecation")
+		  User c=r.getById(id);
+		  r.deleteById(id);
+		  return c.getUsername();
+	  }
+	  
+	  @GetMapping("/update111/{id}/{name}/{email}/{phone}/{pass}")
+	  @ResponseBody
+	  public String update111(@PathVariable int id,@PathVariable String name,@PathVariable String email,@PathVariable String phone,@PathVariable String pass)
+	  {
+		  @SuppressWarnings("deprecation")
+		  User c=r.getById(id);
+		  c.setUsername(name);
+		  c.setEmail(email);
+		  c.setPhoneno(phone);
+		  c.setPassword(pass);
+		  r.save(c);
+		  return c.getUsername();
 	  }
 	  
 	  @PostMapping("/login1")
@@ -188,6 +215,14 @@ public class AppController {
 		  }
 		return "verifyPg";
 	  }
+	  
+	  @GetMapping("/getall")
+	  @ResponseBody
+	  public List<User> getall()
+	  {
+		  return r.findAll();
+	  }
+	  
 	  @GetMapping("/verifyCode")
 	  public String captcha1(Model m)
 	  {		
