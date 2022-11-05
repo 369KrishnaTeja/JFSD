@@ -41,17 +41,8 @@ public class AppController {
 	Electricity t;
 	
 	static double rand;
-	static{
-	rand = Math.random();
-	try {
-		rand = rand*1000000;
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-	}
-	int rd = (int)rand;
+	static int rd;
+	static String mail1;
 	
 	@GetMapping("/")
 	public String welcome(Model m)
@@ -64,6 +55,78 @@ public class AppController {
 	public String about()
 	{
 		return "about";
+	}
+	
+	@GetMapping("/forgotmail1")
+	public String forgotmail1(Model m)
+	{
+		m.addAttribute("command",new User());
+		return "forgotmail";
+	}
+	
+	@GetMapping("/newpass1")
+	public String newpass1(Model m)
+	{
+		m.addAttribute("command",new User());
+		return "newpass";
+	}
+	
+	@GetMapping("/newpass2")
+	public String newpass2(Model m,@ModelAttribute("g") User g)
+	{
+		if(g.getPassword().equals(g.getPhoneno()))
+		{
+			List<User> x=r.findAll();
+			for(int i=0;i<x.size();i++)
+			{
+				if(x.get(i).getEmail().equals(mail1))
+				{
+					x.get(i).setPassword(g.getPassword());
+					r.save(x.get(i));
+				}
+			}
+			m.addAttribute("l","Password reset success");
+			m.addAttribute("command",new User());
+			return "login";
+		}
+		m.addAttribute("l","Two passwords didnt match re-enter");
+		m.addAttribute("command",new User());
+		return "newpass";
+	}
+
+	
+	@GetMapping("/forgotdet1")
+	public String forgotdet1(Model m,@ModelAttribute("g") User g)
+	{
+		List<User> x=r.findAll();
+		for(int i=0;i<x.size();i++)
+		{
+			if(x.get(i).getEmail().equals(g.getEmail()))
+			{
+				m.addAttribute("command",new User());
+				mail1=g.getEmail();
+				String from = "sdpProjectGroup@gmail.com";
+				String to = g.getEmail();
+				m.addAttribute("q","An link has been sent to your mail");
+		        SimpleMailMessage msg = new SimpleMailMessage();
+				msg.setFrom(from);
+				msg.setTo(to);
+				msg.setSubject("Reset Password");
+				StringBuilder htmlBuilder = new StringBuilder();
+				htmlBuilder.append("<html>");
+				htmlBuilder.append("<a href='localhost:8080/newpass1'>Click Here</a>");
+				htmlBuilder.append("</html>");
+				String html = htmlBuilder.toString();
+				msg.setText("Dear User,\n\"You are receiving this mail because you requested for reset password.\n\"Please click on the hyper link below\n"+html);
+				mailSender.send(msg);
+			}
+			else
+			{
+				m.addAttribute("command",new User());
+				m.addAttribute("q","Wrong Mail please enter valid one");
+			}
+		}
+		return "forgotmail";
 	}
 	
 	@GetMapping("/formd")
@@ -232,6 +295,9 @@ public class AppController {
 	  }
 	  @GetMapping("/send_text_email")
 		public String sendPlainTextEmail(@ModelAttribute("g") User g,Model model) {
+		    rand = Math.random();
+			rand = rand*1000000;
+			rd = (int)rand;
 			String from = "sdpProjectGroup@gmail.com";
 			String to = te;
 			String SENDER = "+919493487080"; //Your sinch number
@@ -266,7 +332,7 @@ public class AppController {
 			msg.setFrom(from);
 			msg.setTo(to);
 			msg.setSubject("Successful Registration");
-			msg.setText("Dear User,\n\"You are receiving this mail because you just registered successfully into our EEE System.\n\"We are very happy for you to join us!! :D\nPlease Enter the verification Code that is there below to verify your account\n"+rd);
+			msg.setText("Dear User,\n\"You are receiving this mail because you just registered successfully into our EEE System.\n\"We are very happy for you to join us!! \nPlease Enter the verification Code that is there below to verify your account\n"+rd);
 			
 			mailSender.send(msg);
 		       System.out.println("Random Number:" + rd);

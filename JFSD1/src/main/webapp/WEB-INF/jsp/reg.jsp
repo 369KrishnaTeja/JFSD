@@ -36,6 +36,8 @@
   </div>
 </div>
 <br>
+Already have an account!!! <a href="formlog">Login Here</a>
+<br>
 <br>
 <div class="d-grid gap-2">
   <button class="btn btn-lg btn-primary" type="submit">Sign Me Up</button>

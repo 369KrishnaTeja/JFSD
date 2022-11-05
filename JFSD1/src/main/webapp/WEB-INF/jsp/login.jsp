@@ -22,6 +22,12 @@
   </div>
 </div>
 <br>
+Dont have an account!!! <a href="form">Register Here</a>
+<br>
+Forgot Password <a href="forgotmail1">Enter Mail Here</a>
+<br>
+<h3>${l}</h3>
+<br>
 <br>
 <div class="d-grid gap-2">
   <button class="btn btn-lg btn-primary" type="submit">SignIn</button>
