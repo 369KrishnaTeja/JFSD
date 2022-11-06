@@ -19,6 +19,14 @@ public class Electricity {
 	public void setId(int id) {
 		this.id = id;
 	}
+	int Uniqueid;
+	
+	public int getUniqueid() {
+		return Uniqueid;
+	}
+	public void setUniqueid(int uniqueid) {
+		Uniqueid = uniqueid;
+	}
 	int TotalPower;
 	float hour;
 	public int getTotalPower() {

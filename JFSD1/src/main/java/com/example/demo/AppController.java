@@ -33,6 +33,8 @@ public class AppController {
 	@Autowired
 	Repository2 r1;
 	@Autowired
+	Repository3 r2;
+	@Autowired
 	private JavaMailSender mailSender;
 	
 	String num;
@@ -62,6 +64,42 @@ public class AppController {
 	{
 		m.addAttribute("command",new User());
 		return "forgotmail";
+	}
+	
+	@GetMapping("/eledet1")
+	public String eledet1(Model m)
+	{
+		m.addAttribute("command",new Details());
+		return "eledet";
+	}
+	
+	@PostMapping("/eleput")
+	public String eleput(Model m,@ModelAttribute("g") Details g)
+	{
+		List<Details> x=r2.findAll();
+		if(g.getUsername().equals(e.getUsername()))
+		{
+			for(int i=0;i<x.size();i++)
+			{
+				if(x.get(i).getUsername().equals(g.getUsername()))
+				{
+					m.addAttribute("r","Your Unique ID is already generated and this is your ID: "+x.get(i).getOtp());
+					m.addAttribute("command",new Details());
+					return "eledet";
+				}
+			}
+			double rand2 = Math.random();
+			rand2 = rand2*1000000;
+			int rd2 = (int)rand2;
+			g.setOtp(rd2);
+			r2.save(g);
+			m.addAttribute("r","Your Unique ID : "+rd2+" Save it for Electricity Bill Generation!!!");
+			m.addAttribute("command",new Details());
+			return "eledet";
+		}
+		m.addAttribute("r","User name is invalid");
+		m.addAttribute("command",new Details());
+		return "eledet";
 	}
 	
 	@GetMapping("/newpass1")
@@ -152,10 +190,17 @@ public class AppController {
 	@PostMapping("/details")
 	public String details(@ModelAttribute("k") Electricity k,Model m)
 	{
+		List<Details> f=r2.findByUsername(e.getUsername());
+		if(f.get(0).getOtp()==(k.getUniqueid()))
+		{
+			m.addAttribute("command",new Electricity());
+			t=k;
+			r1.save(k);
+			return "redirect:/ele";
+		}
 		m.addAttribute("command",new Electricity());
-		t=k;
-		r1.save(k);
-		return "redirect:/ele";
+		m.addAttribute("r","Your Unique ID is invalid verify once!!!");
+		return "details";
 	}
 	
 	@GetMapping("/details1")

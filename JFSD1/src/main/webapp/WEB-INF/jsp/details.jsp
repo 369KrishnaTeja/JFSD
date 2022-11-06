@@ -6,11 +6,17 @@
   <li><a href="about">Contact</a></li>
   <li><a href="home">Home</a></li>
 </ul></head>
-<centre><h2>Enter Details To calculate Electricity</h2></centre>
+<center><h2>Enter Details To calculate Electricity</h2></center>
+<br>
+<center><h2>${r}</h2></center>
 <body >
 <div class="bg-img">
 <form:form method="post" action="details">
 <table>
+  <tr>
+    <td>Unique ID:</td>
+    <td><form:input path="Uniqueid"   class="pit" ></form:input></td>
+</tr>
     <tr>
         <td>Total Power:</td>
         <td><form:input path="TotalPower"   class="pit" ></form:input></td>
@@ -22,6 +28,7 @@
     <tr>
         <td><input type="submit" value="Enter"/></td>
     </tr>
+    Dont have an Unique Number!!! <a href="eledet1">Generate here</a>
 </table>
 </form:form>
 </body>
