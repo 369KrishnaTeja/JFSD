@@ -331,6 +331,20 @@ public class AppController {
 		  return r.findAll();
 	  }
 	  
+	  @GetMapping("/getall1")
+	  @ResponseBody
+	  public List<Details> getall1()
+	  {
+		  return r2.findAll();
+	  }
+	  
+	  @GetMapping("/getdis/{dis}")
+	  @ResponseBody
+	  public List<Details> getdis(@PathVariable String dis)
+	  {
+		  return r2.findByDistrict(dis);
+	  }
+	  
 	  @GetMapping("/verifyCode")
 	  public String captcha1(Model m)
 	  {		
