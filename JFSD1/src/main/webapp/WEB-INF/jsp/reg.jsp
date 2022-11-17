@@ -29,6 +29,12 @@
   </div>
     <br>
     <br>
+    <div class="form-floating mb-3">
+    <form:input type="text" class="form-control" id="floatingInput" placeholder="english" path="Language"></form:input>
+    <label for="floatingInput">Preferred Language</label>
+  </div>
+    <br>
+    <br>
   
   <div class="form-floating">
     <form:input type="password" class="form-control" id="floatingPassword" placeholder="Password" path="Password"></form:input>

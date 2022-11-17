@@ -12,6 +12,13 @@ public class User {
 	String username;
 	String email;
 	String phoneno;
+	String language;
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 	String password;
 	public int getId() {
 		return id;

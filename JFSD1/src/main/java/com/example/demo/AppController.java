@@ -1,4 +1,11 @@
 package com.example.demo;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.translate.AmazonTranslate;
+import com.amazonaws.services.translate.AmazonTranslateClient;
+import com.amazonaws.services.translate.model.TranslateTextRequest;
+import com.amazonaws.services.translate.model.TranslateTextResult;
 import com.sinch.xms.*;
 import com.sinch.xms.api.*;
 import java.util.List;
@@ -180,6 +187,57 @@ public class AppController {
 		ResponseEntity<User> response1=new RestTemplate().getForEntity("http://localhost:8080/details2/", User.class);
 		Electricity c1=response.getBody();
 		User c2=response1.getBody();
+		
+		String REGION = "us-east-1";
+		AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
+		        
+        AmazonTranslate translate = AmazonTranslateClient.builder()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds.getCredentials()))
+                .withRegion(REGION)
+                .build();
+        String d=null;
+        if(c2.getLanguage().equals("telugu")||c2.getLanguage().equals("Telugu"))
+        	d="te";
+        else if(c2.getLanguage().equals("hindi")||c2.getLanguage().equals("Hindi"))
+        	d="hi";
+        else
+        	d="en";
+        System.out.println(d);
+        TranslateTextRequest request = new TranslateTextRequest()
+                .withText("Hey this is EEE website!!!\nThis is your bill and you can pay it from our payment gateway.\nYour Bill - "+(c1.getHour()*c1.getTotalPower()*6.15)/1000)
+                .withSourceLanguageCode("en")
+                .withTargetLanguageCode(d);
+        TranslateTextResult result  = translate.translateText(request);
+        System.out.println(result.getTranslatedText());
+
+        
+        String SENDER = "+919493487080"; //Your sinch number
+		String[] RECIPIENTS = { "+91"+ c2.getPhoneno()}; //your mobile phone number
+		final String SERVICE_PLAN_ID = "aed646ca26c944d8b4768429a76d212c";
+		final String TOKEN = "cb8b0d2faac74e2b8b00a40bbd904480";
+		ApiConnection conn = ApiConnection
+				.builder()
+				.servicePlanId(SERVICE_PLAN_ID)
+				.token(TOKEN)
+				.start();
+		MtBatchTextSmsCreate message = SinchSMSApi
+						.batchTextSms()
+						.sender(SENDER)
+						.addRecipient(RECIPIENTS)
+						.body(result.getTranslatedText())
+						.build();
+		
+		try {
+			// if there is something wrong with the batch
+			// it will be exposed in APIError
+			MtBatchTextSmsResult batch = conn.createBatch(message);
+			System.out.println(batch.id());
+			} catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+			System.out.println("you sent:" + message.body());
+		
+		
 		m.addAttribute("us",c2.getUsername());
 		m.addAttribute("em",c2.getEmail());
 		m.addAttribute("ph",c2.getPhoneno());
