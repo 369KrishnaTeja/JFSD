@@ -80,6 +80,22 @@ public class AppController {
 		return "eledet";
 	}
 	
+	@ResponseBody
+	@GetMapping("/sendmsg/{msg1}")
+	public void sendmsg(@PathVariable String msg1)
+	{
+		List<User> x=r.findByUsername(msg1);
+		String email=x.get(0).getEmail();
+		String from = "sdpProjectGroup@gmail.com";
+		String to = email;
+        SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setFrom(from);
+		msg.setTo(to);
+		msg.setSubject("Intimation of Bill Payment");
+		msg.setText("Dear User,\n\"This is EEE Website\nYou are receiving this mail because you havent payed the bill yet\nYou can pay from our website");
+		mailSender.send(msg);
+	}
+	
 	@PostMapping("/eleput")
 	public String eleput(Model m,@ModelAttribute("g") Details g)
 	{
