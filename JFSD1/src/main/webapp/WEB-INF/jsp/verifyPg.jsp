@@ -8,6 +8,7 @@
 <div class="form-group" >
   <label class="form-label mt-4">Captcha Verification</label>
   <br>
+  <h2>${c}</h2>
   <br>
 
   <div class="form-floating mb-3">

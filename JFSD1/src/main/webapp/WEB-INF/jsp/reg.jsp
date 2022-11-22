@@ -8,6 +8,7 @@
 <div class="form-group" >
   <label class="form-label mt-4">Registration</label>
   <br>
+  <h3>${un}</h3>
   <br>
   <br>
   <div class="form-floating mb-3">

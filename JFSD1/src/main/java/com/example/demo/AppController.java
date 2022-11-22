@@ -333,10 +333,30 @@ public class AppController {
 	  {		
 		  te=null;
 		  m.addAttribute("command",new User());
+		  if(g.getPhoneno().length()==10)
+		  {
+		  List<User> u=r.findAll();
+		  for(int i=0;i<r.count();i++)
+		  {
+			  User x=u.get(i);
+			  if(g.getUsername().equals(x.getUsername())||g.getEmail().equals(x.getEmail()))
+			  {
+				  m.addAttribute("un","Username or Email Already Exists use another one");
+				  m.addAttribute("command",new User());
+				  return "reg";
+			  }
+		  }
 		  r.save(g);
 		  te = g.getEmail();
 		  num = g.getPhoneno();
 		  return "redirect:/send_text_email";
+		  }
+		  else
+		  {
+			  m.addAttribute("un","Phone Number Invalid");
+			  m.addAttribute("command",new User());
+			  return "reg";
+		  }
 	  }
 	  
 	  @GetMapping("/delete111/{id}")
@@ -388,13 +408,16 @@ public class AppController {
 	  }
 	  
 	  @GetMapping("/captcha")
-	  public String captcha(@ModelAttribute("rval") Captcha val)
+	  public String captcha(Model m,@ModelAttribute("rval") Captcha val)
 	  {		
 		  
 		  if(val.getRval()==rd) 
 		  {
-			  return "redirect:/";
+			  m.addAttribute("l","Captcha Verified Successfully!!!");
+			  m.addAttribute("command",new User());
+			  return "login";
 		  }
+		m.addAttribute("c","Invalid Captcha!!!");
 		return "verifyPg";
 	  }
 	  
