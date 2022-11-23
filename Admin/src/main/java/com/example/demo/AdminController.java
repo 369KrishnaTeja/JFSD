@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class AdminController
 {
 	int f=0;
 	User[] c1;
+	Details[] c2;
 	int r;
 	@GetMapping("/")
 	public String admin(Model m)
@@ -29,6 +31,17 @@ public class AdminController
 		m.addAttribute("command", new Admin());
 		return "main";
 	}
+	
+	@Autowired
+	private AWSS3Service awsS3Service;
+	
+	@ResponseBody
+	@PostMapping("/upload")
+	public String uploadFile(@RequestParam("file") MultipartFile file) {
+		awsS3Service.uploadFile(file);
+		return "File Upload Success";
+	}
+	
 	
 	@GetMapping("/login")
 	public String login(Model m,@ModelAttribute("g") Admin g)
@@ -57,6 +70,47 @@ public class AdminController
 			m.addAttribute("h", c1);
 			m.addAttribute("command", new User());
 			return "ope";
+		}
+		else
+		return null;
+	}
+	
+	@GetMapping("/login2")
+	public String login2(Model m)
+	{
+		ResponseEntity<Details[]> response=new RestTemplate().getForEntity("http://localhost:8080/getall1/",Details[].class);
+		c2=response.getBody();
+		//ModelAndView j=new ModelAndView("ope");
+		//j.addObject("h",c1);
+		if(f!=0)
+		{
+			m.addAttribute("h", c2);
+			m.addAttribute("command", new Details());
+			return "ope1";
+		}
+		else
+		return null;
+	}
+	
+	
+	@GetMapping("/intimate")
+	public String intimate(@ModelAttribute("g") Details g)
+	{
+		new RestTemplate().getForEntity("http://localhost:8080/sendmsg/"+g.getUsername(),Details[].class);
+		return "redirect:/login2";
+	}
+	
+	@GetMapping("/getdis")
+	public String getdis(Model m,@ModelAttribute("g") Details g)
+	{
+		Details[] c3=null;
+		if(f!=0)
+		{
+			ResponseEntity<Details[]> response=new RestTemplate().getForEntity("http://localhost:8080/getdis/"+g.getDistrict(),Details[].class);
+			c3=response.getBody();
+			m.addAttribute("h", c3);
+			m.addAttribute("command", new Details());
+			return "ope1";
 		}
 		else
 		return null;
