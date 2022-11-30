@@ -10,6 +10,13 @@ public class Details {
 	String ero;
 	String address;
 	String district;
+	String status;
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	int otp;
 	public int getId() {
 		return id;

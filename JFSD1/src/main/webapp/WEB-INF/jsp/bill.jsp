@@ -34,6 +34,14 @@
       <div align="center">
 		<button id="button">Generate PDF</button>
 </div>
+<br>
+<center>
+<form type="get" action="redirect">
+	<p>Payment Status : ${status}</p>
+	<br>
+	<input id="button" type="submit" value="Pay Here"></input>
+</form>
+</center>
 </div>
 
 <style>

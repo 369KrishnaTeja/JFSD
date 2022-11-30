@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AppController {
@@ -60,6 +61,14 @@ public class AppController {
 		return "welcome";
 	}
 	
+	@GetMapping("/redirect")
+	public ModelAndView method() {
+		List<Details> g=r2.findByUsername(e.getUsername());
+		g.get(0).setStatus("Paid");
+		r2.save(g.get(0));
+	    return new ModelAndView("redirect:" + "http://localhost:9090");
+	}
+	
 	@GetMapping("/about")
 	public String about()
 	{
@@ -86,7 +95,7 @@ public class AppController {
 	{
 		List<User> x=r.findByUsername(msg1);
 		String email=x.get(0).getEmail();
-		String from = "sdpProjectGroup@gmail.com";
+		String from = "easyelectricityforeveryone@gmail.com";
 		String to = email;
         SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setFrom(from);
@@ -166,7 +175,7 @@ public class AppController {
 			{
 				m.addAttribute("command",new User());
 				mail1=g.getEmail();
-				String from = "sdpProjectGroup@gmail.com";
+				String from = "easyelectricityforeveryone@gmail.com";
 				String to = g.getEmail();
 				m.addAttribute("q","An link has been sent to your mail");
 		        SimpleMailMessage msg = new SimpleMailMessage();
@@ -199,10 +208,10 @@ public class AppController {
 	@GetMapping("/ele")
 	public String calculate(Model m)
 	{
-		ResponseEntity<Electricity> response=new RestTemplate().getForEntity("http://localhost:8080/details1/", Electricity.class);
-		ResponseEntity<User> response1=new RestTemplate().getForEntity("http://localhost:8080/details2/", User.class);
-		Electricity c1=response.getBody();
-		User c2=response1.getBody();
+//		ResponseEntity<Electricity> response=new RestTemplate().getForEntity("http://localhost:8080/details1/", Electricity.class);
+//		ResponseEntity<User> response1=new RestTemplate().getForEntity("http://localhost:8080/details2/", User.class);
+//		Electricity c1=response.getBody();
+//		User c2=response1.getBody();
 		
 		String REGION = "us-east-1";
 		AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
@@ -212,52 +221,54 @@ public class AppController {
                 .withRegion(REGION)
                 .build();
         String d=null;
-        if(c2.getLanguage().equals("telugu")||c2.getLanguage().equals("Telugu"))
+        if(e.getLanguage().equals("telugu")||e.getLanguage().equals("Telugu"))
         	d="te";
-        else if(c2.getLanguage().equals("hindi")||c2.getLanguage().equals("Hindi"))
+        else if(e.getLanguage().equals("hindi")||e.getLanguage().equals("Hindi"))
         	d="hi";
         else
         	d="en";
         System.out.println(d);
         TranslateTextRequest request = new TranslateTextRequest()
-                .withText("Hey this is EEE website!!!\nThis is your bill and you can pay it from our payment gateway.\nYour Bill - "+(c1.getHour()*c1.getTotalPower()*6.15)/1000)
+                .withText("Hey this is EEE website!!!\nThis is your bill and you can pay it from our payment gateway.\nYour Bill - "+(t.getHour()*t.getTotalPower()*6.15)/1000)
                 .withSourceLanguageCode("en")
                 .withTargetLanguageCode(d);
         TranslateTextResult result  = translate.translateText(request);
         System.out.println(result.getTranslatedText());
 
         
-        String SENDER = "+919493487080"; //Your sinch number
-		String[] RECIPIENTS = { "+91"+ c2.getPhoneno()}; //your mobile phone number
-		final String SERVICE_PLAN_ID = "aed646ca26c944d8b4768429a76d212c";
-		final String TOKEN = "cb8b0d2faac74e2b8b00a40bbd904480";
-		ApiConnection conn = ApiConnection
-				.builder()
-				.servicePlanId(SERVICE_PLAN_ID)
-				.token(TOKEN)
-				.start();
-		MtBatchTextSmsCreate message = SinchSMSApi
-						.batchTextSms()
-						.sender(SENDER)
-						.addRecipient(RECIPIENTS)
-						.body(result.getTranslatedText())
-						.build();
-		
-		try {
-			// if there is something wrong with the batch
-			// it will be exposed in APIError
-			MtBatchTextSmsResult batch = conn.createBatch(message);
-			System.out.println(batch.id());
-			} catch (Exception e) {
-			System.out.println(e.getMessage());
-			}
-			System.out.println("you sent:" + message.body());
-		
-		
-		m.addAttribute("us",c2.getUsername());
-		m.addAttribute("em",c2.getEmail());
-		m.addAttribute("ph",c2.getPhoneno());
-		m.addAttribute("cost",(c1.getHour()*c1.getTotalPower()*6.15)/1000);
+//        String SENDER = "+919000204714"; //Your sinch number
+//		String[] RECIPIENTS = { "+91"+ e.getPhoneno()}; //your mobile phone number
+//		final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
+//		final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
+//		ApiConnection conn = ApiConnection
+//				.builder()
+//				.servicePlanId(SERVICE_PLAN_ID)
+//				.token(TOKEN)
+//				.start();
+//		MtBatchTextSmsCreate message = SinchSMSApi
+//						.batchTextSms()
+//						.sender(SENDER)
+//						.addRecipient(RECIPIENTS)
+//						.body(result.getTranslatedText())
+//						.build();
+//		
+//		try {
+//			// if there is something wrong with the batch
+//			// it will be exposed in APIError
+//			MtBatchTextSmsResult batch = conn.createBatch(message);
+//			System.out.println(batch.id());
+//			} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//			}
+//			System.out.println("you sent:" + message.body());
+//		
+//		
+        List<Details> q=r2.findByUsername(e.getUsername());
+		m.addAttribute("us",e.getUsername());
+		m.addAttribute("em",e.getEmail());
+		m.addAttribute("ph",e.getPhoneno());
+		m.addAttribute("cost",(t.getHour()*t.getTotalPower()*6.15)/1000);
+		m.addAttribute("status",q.get(0).getStatus());
 		return "bill";
 	}
 	
@@ -365,7 +376,10 @@ public class AppController {
 	  {
 		  @SuppressWarnings("deprecation")
 		  User c=r.getById(id);
+		  String s=c.getUsername();
 		  r.deleteById(id);
+		  List<Details> w=r2.findByUsername(s);
+		  r2.deleteById(w.get(0).getId());
 		  return c.getUsername();
 	  }
 	  
@@ -454,13 +468,12 @@ public class AppController {
 		    rand = Math.random();
 			rand = rand*1000000;
 			rd = (int)rand;
-			String from = "sdpProjectGroup@gmail.com";
+			String from = "easyelectricityforeveryone@gmail.com";
 			String to = te;
-			String SENDER = "+919493487080"; //Your sinch number
-			String[] RECIPIENTS = { "+91"+num }; //your mobile phone number
-			System.out.println("+91"+num);
-			final String SERVICE_PLAN_ID = "aed646ca26c944d8b4768429a76d212c";
-			final String TOKEN = "cb8b0d2faac74e2b8b00a40bbd904480";
+			String SENDER = "+919000204714"; //Your sinch number
+			String[] RECIPIENTS = { "+91"+ num}; //your mobile phone number
+			final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
+			final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
 			ApiConnection conn = ApiConnection
 					.builder()
 					.servicePlanId(SERVICE_PLAN_ID)

@@ -24,7 +24,7 @@
     <td>${u.address}</td>
     <td>${u.district}</td>
     <td>${u.otp}</td>
-    <td>Not Paid</td>
+    <td>${u.status}</td>
     <td>
       <form action="intimate" method="get">
         <input type="hidden" name="username" id="username" value=${u.username}></input>
