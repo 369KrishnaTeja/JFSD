@@ -24,6 +24,7 @@ public class AdminController
 	int f=0;
 	User[] c1;
 	Details[] c2;
+	Query1[] c3;
 	int r;
 	@GetMapping("/")
 	public String admin(Model m)
@@ -87,6 +88,21 @@ public class AdminController
 			m.addAttribute("h", c2);
 			m.addAttribute("command", new Details());
 			return "ope1";
+		}
+		else
+		return null;
+	}
+	
+	@GetMapping("/login3")
+	public String login3(Model m)
+	{
+		ResponseEntity<Query1[]> response=new RestTemplate().getForEntity("http://localhost:8080/getall2/",Query1[].class);
+		c3=response.getBody();
+		if(f!=0)
+		{
+			m.addAttribute("h", c3);
+			m.addAttribute("command", new Query1());
+			return "ope2";
 		}
 		else
 		return null;
@@ -166,6 +182,13 @@ public class AdminController
 		String s=res.getBody()+" Updated Successfully";
 		m.addAttribute("s",s);
 		return "display";
+	}
+	
+	@GetMapping("/update3")
+	public String update3(@ModelAttribute("f") Query1 f)
+	{
+		new RestTemplate().getForEntity("http://localhost:8080/update222/"+f.getUsername()+"/"+f.getReply(),Query1.class);
+		return "redirect:/login3";
 	}
 	
 }

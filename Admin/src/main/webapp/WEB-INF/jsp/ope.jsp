@@ -26,5 +26,8 @@
     </tr>
   </c:forEach>
   </table>
+  <br>
+  <a href="login2">Electricity Details</a>
+  <a href="login3">Queries</a>
   </div>
 </center>

@@ -47,6 +47,7 @@
 </form>
   <br>
   <a href="login1">User Details</a>
+  <a href="login3">Queries</a>
   </div>
 </center>
 

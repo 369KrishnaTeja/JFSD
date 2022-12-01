@@ -47,6 +47,8 @@ public class AppController {
 	@Autowired
 	Repository4 r3;
 	@Autowired
+	Repository5 r4;
+	@Autowired
 	private JavaMailSender mailSender;
 	
 	int z=0;
@@ -64,6 +66,38 @@ public class AppController {
 	{
 		m.addAttribute("command",new User());
 		return "welcome";
+	}
+	
+	@GetMapping("/query")
+	public String query(Model m)
+	{
+		Query1 x=new Query1();
+		x=r4.getByUsername(e.getUsername());
+		m.addAttribute("h",x);
+		m.addAttribute("command",new Query1());
+		return "report";
+	}
+	
+	@GetMapping("/getquery")
+	public String getquery(Model m,@ModelAttribute("f") Query1 f)
+	{
+		List<Query1> q=r4.findAll();
+		for(int i=0;i<q.size();i++)
+		{
+			if(e.getUsername().equals(q.get(i).getUsername()))
+			{
+				r4.deleteByUsername(e.getUsername());
+			}
+		}
+		Query1 z=new Query1();
+		z.setUsername(e.getUsername());
+		z.setQuery(" : "+f.getQuery());
+		z.setReply("EEE : Your Request Has Been Submitted We are working on it");
+		z.setStatus("No reply");
+		r4.save(z);
+		m.addAttribute("h",z);
+		m.addAttribute("command",new Query1());
+		return "report";
 	}
 	
 	@GetMapping("/redirect")
@@ -275,33 +309,32 @@ public class AppController {
         System.out.println(result.getTranslatedText());
 
         
-//        String SENDER = "+919000204714"; //Your sinch number
-//		String[] RECIPIENTS = { "+91"+ e.getPhoneno()}; //your mobile phone number
-//		final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
-//		final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
-//		ApiConnection conn = ApiConnection
-//				.builder()
-//				.servicePlanId(SERVICE_PLAN_ID)
-//				.token(TOKEN)
-//				.start();
-//		MtBatchTextSmsCreate message = SinchSMSApi
-//						.batchTextSms()
-//						.sender(SENDER)
-//						.addRecipient(RECIPIENTS)
-//						.body(result.getTranslatedText())
-//						.build();
-//		
-//		try {
-//			// if there is something wrong with the batch
-//			// it will be exposed in APIError
-//			MtBatchTextSmsResult batch = conn.createBatch(message);
-//			System.out.println(batch.id());
-//			} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//			}
-//			System.out.println("you sent:" + message.body());
-//		
-//		
+        String SENDER = "+919000204714"; //Your sinch number
+		String[] RECIPIENTS = { "+91"+ e.getPhoneno()}; //your mobile phone number
+		final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
+		final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
+		ApiConnection conn = ApiConnection
+				.builder()
+				.servicePlanId(SERVICE_PLAN_ID)
+				.token(TOKEN)
+				.start();
+		MtBatchTextSmsCreate message = SinchSMSApi
+						.batchTextSms()
+						.sender(SENDER)
+						.addRecipient(RECIPIENTS)
+						.body(result.getTranslatedText())
+						.build();
+		
+		try {
+			// if there is something wrong with the batch
+			// it will be exposed in APIError
+			MtBatchTextSmsResult batch = conn.createBatch(message);
+			System.out.println(batch.id());
+			} catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+			System.out.println("you sent:" + message.body());
+		
         List<Details> q=r2.findByUsername(e.getUsername());
 		m.addAttribute("us",e.getUsername());
 		m.addAttribute("em",e.getEmail());
@@ -422,6 +455,16 @@ public class AppController {
 		  return c.getUsername();
 	  }
 	  
+	  @ResponseBody
+	  @GetMapping("/update222/{username}/{reply}")
+	  public void update222(@PathVariable String username,@PathVariable String reply)
+	  {
+		  Query1 d=r4.getByUsername(username);
+		  d.setReply(reply);
+		  d.setStatus("Replied Successfully");
+		  r4.save(d);
+	  }
+	  
 	  @GetMapping("/update111/{id}/{name}/{email}/{phone}/{pass}")
 	  @ResponseBody
 	  public String update111(@PathVariable int id,@PathVariable String name,@PathVariable String email,@PathVariable String phone,@PathVariable String pass)
@@ -486,6 +529,13 @@ public class AppController {
 	  public List<Details> getall1()
 	  {
 		  return r2.findAll();
+	  }
+	  
+	  @GetMapping("/getall2")
+	  @ResponseBody
+	  public List<Query1> getall2()
+	  {
+		  return r4.findAll();
 	  }
 	  
 	  @GetMapping("/getdis/{dis}")

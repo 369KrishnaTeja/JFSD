@@ -14,6 +14,7 @@
   <a href="/slabs"><button type="button" class="btn btn-primary">Features</button></a>
   <a href="/about"><button type="button" class="btn btn-primary">About Us</button></a>
   <a href="/formd"><button type="button" class="btn btn-primary">Calculate Bill</button></a>
+  <a href="/query"><button type="button" class="btn btn-primary">Any Queries</button></a>
   <div class="dropdown" style="margin-top: 1%;max-width:20%">
   <button onclick="myFunction()" id="test" class="dropbtn">${un} </button>
   <div id="myDropdown" class="dropdown-content">
