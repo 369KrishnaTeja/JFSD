@@ -8,6 +8,8 @@ import com.amazonaws.services.translate.model.TranslateTextRequest;
 import com.amazonaws.services.translate.model.TranslateTextResult;
 import com.sinch.xms.*;
 import com.sinch.xms.api.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -43,8 +45,11 @@ public class AppController {
 	@Autowired
 	Repository3 r2;
 	@Autowired
+	Repository4 r3;
+	@Autowired
 	private JavaMailSender mailSender;
 	
+	int z=0;
 	String num;
 	String te;
 	User e;
@@ -73,6 +78,40 @@ public class AppController {
 	public String about()
 	{
 		return "about";
+	}
+	
+	@GetMapping("/slabs")
+	public String slabs(Model m)
+	{
+		m.addAttribute("command",new Slabs());
+		if(z==1)
+		{
+			m.addAttribute("hhh","Slab Limit Exceeded");
+		}
+		List<Slabs> h=r3.findAll();
+		m.addAttribute("h",h);
+		return "slabs";
+	}
+	
+	@GetMapping("/getslab")
+	public String getslab(@ModelAttribute("f") Slabs f,Model m)
+	{
+		List<Slabs> o=r3.findAll();
+		for(int i=0;i<o.size();i++)
+		{
+			if(f.getUnits()>=o.get(i).getMinunit()&&f.getUnits()<=o.get(i).getMaxunit())
+			{
+				m.addAttribute("command",new Slabs());
+				List<Slabs> s = new ArrayList<Slabs>();
+				s.add(o.get(i));
+				m.addAttribute("h",s);
+				m.addAttribute("hhh","This is your Slab according to the units you entered");
+				z=0;
+				return "slabs";
+			}
+		}
+		z=1;
+		return "redirect:/slabs";
 	}
 	
 	@GetMapping("/forgotmail1")

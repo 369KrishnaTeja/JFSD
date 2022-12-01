@@ -11,7 +11,7 @@
 
   <a class="w3-bar-item w3-button" onclick="myFunction()" style="margin-top: 1%;"><i class="fa fa-bars"></i></a>
   <a class="active" href="/"><button type="button" class="btn btn-primary">Home</button></a>
-  <a href="#news"><button type="button" class="btn btn-primary">Features</button></a>
+  <a href="/slabs"><button type="button" class="btn btn-primary">Features</button></a>
   <a href="/about"><button type="button" class="btn btn-primary">About Us</button></a>
   <a href="#contact	"><button type="button" class="btn btn-primary">Contact Us</button></a>
   <div class="dropdown" style="margin-top: 1%;max-width:20%">
