@@ -13,7 +13,6 @@
   <a class="active" href="/"><button type="button" class="btn btn-primary">Home</button></a>
   <a href="/slabs"><button type="button" class="btn btn-primary">Features</button></a>
   <a href="/about"><button type="button" class="btn btn-primary">About Us</button></a>
-  <a href="#contact	"><button type="button" class="btn btn-primary">Contact Us</button></a>
   <div class="dropdown" style="margin-top: 1%;max-width:20%">
   <button onclick="myFunction()" class="dropbtn">Get Me In</button>
   <div id="myDropdown" class="dropdown-content">

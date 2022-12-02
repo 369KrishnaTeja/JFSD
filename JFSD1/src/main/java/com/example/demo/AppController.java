@@ -449,6 +449,8 @@ public class AppController {
 		  @SuppressWarnings("deprecation")
 		  User c=r.getById(id);
 		  String s=c.getUsername();
+		  Query1 x=r4.getByUsername(s);
+		  r4.delete(x);
 		  r.deleteById(id);
 		  List<Details> w=r2.findByUsername(s);
 		  r2.deleteById(w.get(0).getId());
