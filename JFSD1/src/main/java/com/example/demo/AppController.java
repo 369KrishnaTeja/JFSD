@@ -52,6 +52,7 @@ public class AppController {
 	private JavaMailSender mailSender;
 	
 	int z=0;
+	String user;
 	String num;
 	String te;
 	User e;
@@ -182,7 +183,7 @@ public class AppController {
 	public String eleput(Model m,@ModelAttribute("g") Details g)
 	{
 		List<Details> x=r2.findAll();
-		if(g.getUsername().equals(e.getUsername()))
+		if(g.getUsername().equals(e.getUsername())&&e.getVerify().equals("Verified"))
 		{
 			for(int i=0;i<x.size();i++)
 			{
@@ -202,7 +203,7 @@ public class AppController {
 			m.addAttribute("command",new Details());
 			return "eledet";
 		}
-		m.addAttribute("r","User name is invalid");
+		m.addAttribute("r","User name is invalid or Account not verified");
 		m.addAttribute("command",new Details());
 		return "eledet";
 	}
@@ -309,10 +310,10 @@ public class AppController {
         System.out.println(result.getTranslatedText());
 
         
-        String SENDER = "+919000204714"; //Your sinch number
+        String SENDER = "+916300562257"; //Your sinch number
 		String[] RECIPIENTS = { "+91"+ e.getPhoneno()}; //your mobile phone number
-		final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
-		final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
+		final String SERVICE_PLAN_ID = "71b6c84a776b42cf8b31f9002462728e";
+		final String TOKEN = "e28c950cd41d471cbc4b149ed8f5b14e";
 		ApiConnection conn = ApiConnection
 				.builder()
 				.servicePlanId(SERVICE_PLAN_ID)
@@ -429,9 +430,11 @@ public class AppController {
 				  return "reg";
 			  }
 		  }
+		  g.setVerify("Not Verified");
 		  r.save(g);
 		  te = g.getEmail();
 		  num = g.getPhoneno();
+		  user=g.getUsername();
 		  return "redirect:/send_text_email";
 		  }
 		  else
@@ -511,6 +514,9 @@ public class AppController {
 		  
 		  if(val.getRval()==rd) 
 		  {
+			  List<User> a=r.findByUsername(user);
+			  a.get(0).setVerify("Verified");
+			  r.save(a.get(0));
 			  m.addAttribute("l","Captcha Verified Successfully!!!");
 			  m.addAttribute("command",new User());
 			  return "login";
@@ -561,10 +567,10 @@ public class AppController {
 			rd = (int)rand;
 			String from = "easyelectricityforeveryone@gmail.com";
 			String to = te;
-			String SENDER = "+919000204714"; //Your sinch number
+			String SENDER = "+916300562257"; //Your sinch number
 			String[] RECIPIENTS = { "+91"+ num}; //your mobile phone number
-			final String SERVICE_PLAN_ID = "2a748beca0664a2687b7c02592c8cc74";
-			final String TOKEN = "bfe8cd9d42aa4db1b03a96fca813fb4b";
+			final String SERVICE_PLAN_ID = "71b6c84a776b42cf8b31f9002462728e";
+			final String TOKEN = "e28c950cd41d471cbc4b149ed8f5b14e";
 			ApiConnection conn = ApiConnection
 					.builder()
 					.servicePlanId(SERVICE_PLAN_ID)

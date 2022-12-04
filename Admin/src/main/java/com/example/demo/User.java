@@ -8,6 +8,13 @@ public class User {
 	String email;
 	String phoneno;
 	String password;
+	String verify;
+	public String getVerify() {
+		return verify;
+	}
+	public void setVerify(String verify) {
+		this.verify = verify;
+	}
 	public int getId() {
 		return id;
 	}

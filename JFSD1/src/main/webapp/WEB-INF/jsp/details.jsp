@@ -37,9 +37,9 @@
 <style>
 body{
 
-  background-image: url("../../images/1323434.jpg");
+  background-image: url("../../images/gan.jpeg");
     background-repeat: no-repeat;
-    background-size: 1550px 750px ;
+    background-size: cover ;
 }
 container{
   width:400px;
